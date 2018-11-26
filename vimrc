@@ -1,0 +1,9 @@
+set t_Co=256
+syntax enable
+set number
+set ruler
+set nohlsearch
+set incsearch
+set tabstop=4
+set expandtab
+colorscheme koehler
