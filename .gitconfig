@@ -7,8 +7,9 @@
 	unstage = reset HEAD --
 	st = status
 	last = log -1 HEAD
-    lg = log --graph --full-history --color --pretty=format:'%x1b[31m%h%x09%x1b[33m%d%x1b[0m%x20%s %x1b[32m(%ar) %x1b[34m%x1b[1m<%an>%x1b[0m' --abbrev-commit --date=relative
+  lg = log --graph --full-history --color --pretty=format:'%x1b[31m%h%x09%x1b[33m%d%x1b[0m%x20%s %x1b[32m(%ar) %x1b[34m%x1b[1m<%an>%x1b[0m' --abbrev-commit --date=relative
 	ls = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    changes = diff-tree --no-commit-id --name-only -r
 [color "branch"]
 	current = yellow reverse
 	local = yellow
