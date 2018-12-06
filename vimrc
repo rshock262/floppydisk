@@ -6,4 +6,5 @@ set nohlsearch
 set incsearch
 set tabstop=4
 set expandtab
+set showcmd
 colorscheme koehler
