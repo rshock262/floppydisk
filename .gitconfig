@@ -1,19 +1,58 @@
+# This is Git's per-user configuration file.
 [user]
-	name = Robert Shockley
-	email = rshockle@gmail.com
 [core]
 	editor = vim
 [alias]
-	unstage = reset HEAD --
+	#List files to undo
+	unstage = reset @ --
+	#Discard changes for specific files
+	nyx = checkout --
+	#Hard rollback by 1 commit
+	htfu = reset --hard @^
+	#Kill all changes 
+	fubar = reset --hard @
+	#Undo changes, but keep them in working tree. Helpful for squashing
+	tarfu = reset --soft
+	#Status shortened
 	st = status
-	last = log -1 HEAD
-  lg = log --graph --full-history --color --pretty=format:'%x1b[31m%h%x09%x1b[33m%d%x1b[0m%x20%s %x1b[32m(%ar) %x1b[34m%x1b[1m<%an>%x1b[0m' --abbrev-commit --date=relative
-	ls = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-    changes = diff-tree --no-commit-id --name-only -r
+	#Checkout shortened
+	ch = checkout
+	#Commit "Shortened"
+	co = commit -v
+	#Better branch output
+	br = branch -vv --sort=authordate
+  	branch-clean = "!git br -D $(git branch -vv | grep ': gone' | awk '{print $1}')"
+  	#Log but with extrenous details
+  	s = show --format=fuller
+	#List recent changes and display branch lines
+	lg = log --graph --full-history --color --pretty=format:'%x1b[31m%h%x09%x1b[33m%d%x1b[0m%x20%s %x1b[32m(%ar) %x1b[34m%x1b[1m<%an>%x1b[0m' --abbrev-commit --date=relative
+	#List commits sorted in reverse by most recent and display abbreviated commit
+	ls = log --pretty=format:'%Cgreen(%cr) %Cred%h%Creset -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit --reverse
+	#Commit list limited to 8
+	l = log --pretty=format:'%Cgreen(%cr) %Cred%h%Creset -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit --reverse -8
+	#Longer "list" showing commit message and changes for last three things
+	ll = s -3 --reverse
+	#Show the diff of the most recent and the commit directly behind it, and stat version to see file names + changes
+	ydw = diff @~ @
+	ydws = diff @~ @ --stat
+	#List all references sorted by most recent commit date and list the last committer, be careful who sees this
+	wdw = for-each-ref --sort=committerdate --format='(%(color:green)%(committerdate:relative)%(color:reset)) - %(color:red)%(objectname:short)%(color:reset) - %(color:yellow)%(refname:lstrip=3)%(color:reset) - %(contents:subject) - %(color:bold blue)<%(authorname)>%(color:reset)' 
+	#Blame still looks bad, this makes it a bit better
+	boi = blame -c
+	#List local (index) changes for when you forget what you were just doing
+	idw = diff @
+	idws = diff @ --stat
+	#Search files for matching pattern (case insensitive), get the count of how many times it comes up per file
+	igrep = grep -i -c
+	#Find all references to "<string>" (case sensitivte) in the log. WIP since it doesn't mention branch names
+	find = log --all  --reverse --pretty=\"format:(%cr) - %Cred%h%Creset - %Creset%s %Cgreen%an%Creset\" --grep
+  	#Return to project root
+  	rt = git rev-parse --show-toplevel
 [color "branch"]
 	current = yellow reverse
 	local = yellow
 	remote = green
+	upstream = bold blue
 [color "diff"]
 	meta = yellow bold
 	frag = magenta bold
@@ -23,3 +62,12 @@
 	added = green
 	changed = yellow
 	untracked = cyan
+[core]
+	editor = ''
+[commit]
+	#sets a custom message under each commit that isn't -m
+	template = ~/.gitmessage
+[help]
+	autocorrect = 1
+[remote "origin"]
+	prune = true
